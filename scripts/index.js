@@ -85,7 +85,19 @@ document.addEventListener('DOMContentLoaded', function () {
     function redirectToAddUserPage() {
       window.location.href = '../views/addUser.html'; 
     }
-  
+
+    function searchUsers() {
+        const searchTerm = searchInput.value.toLowerCase();
+        currentSearchParams = `?q=${searchTerm}`;
+        fetchUsers(currentSearchParams);
+    }
+      
+    function sortUsers() {
+        const selectedOption = sortOptions.value;
+        currentSearchParams = `?_sort=name&_order=${selectedOption}`;
+        fetchUsers(currentSearchParams);
+    }
+    
     // Initial fetch
     fetchUsers(`?_page=${currentPage}&_limit=${itemsPerPage}`);    
   });
