@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles/index.css">
+  <title>User Dashboard</title>
+</head>
+<body>
+
+<nav>
+  <div>User Dashboard</div>
+</nav>
+
+<div class="dashboard-controls">
+    <button id="addUserBtn">Add New User</button>
+    <div class="search-bar">
+      <input type="text" placeholder="Search By Name" id="searchInput" oninput="searchUsers()">
+    </div>
+    <div class="sort-controls">
+        <label for="sortOptions">Sort by:</label>
+        <select id="sortOptions">
+          <option>Name</option>
+          <option value="asc">A-Z</option>
+          <option value="desc">Z-A</option>
+        </select>
+    </div>
+</div>
+
+<div id="userContainer"></div>
+
+<div class="pagination" id="paginationContainer"></div>
+
+
+<script src="./scripts/index.js"></script>
+
+</body>
+</html>
