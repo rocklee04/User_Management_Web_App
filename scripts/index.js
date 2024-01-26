@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
     
     let currentPage = 1;
     const itemsPerPage = 5;
-  
+    
+    // to fetch all users data
     function fetchUsers(queryParamString = null) {
-      // const queryParamString = `?_page=${currentPage}&_limit=${itemsPerPage}`;
   
       fetch(`${apiUrl}${queryParamString ? queryParamString : ""}`)
         .then((res) => {
@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
   
+    // to render pagination
     function renderPagination(totalPages) {
         const paginationContainer = document.getElementById('paginationContainer');
         paginationContainer.innerHTML = '';
@@ -46,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
     
+    // to display all users 
     function displayUsers(users) {
       userContainer.innerHTML = '';
       users.forEach(user => {
@@ -74,30 +76,53 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = `./views/updateUser.html?id=${userId}`;
     }
   
+    // to delete the user
     function deleteUser(userId) {
-      if (confirm('Are you sure you want to delete this user?')) {
-        fetch(`${apiUrl}/${userId}`, { method: 'DELETE' })
-        .then(() => fetchUsers())
-        .catch(error => console.error('Error deleting user:', error));
-      }
-    } 
+        Swal.fire({
+          title: 'Are you sure?',
+          text: 'You will not be able to recover this user!',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            fetch(`${apiUrl}/${userId}`, { method: 'DELETE' })
+              .then(() => {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Delete Successful',
+                  text: `${userId} has been successfully deleted.`,
+                }).then(() => {
+                  window.location.href = "../index.html";
+                });
+                fetchUsers();
+              })
+              .catch(error => console.error('Error deleting user:', error));
+          }
+        });
+    }
+      
   
     function redirectToAddUserPage() {
       window.location.href = '../views/addUser.html'; 
     }
 
+    // to search any user
     function searchUsers() {
         const searchTerm = searchInput.value.toLowerCase();
         currentSearchParams = `?q=${searchTerm}`;
         fetchUsers(currentSearchParams);
     }
       
+    // to sort user by their name
     function sortUsers() {
         const selectedOption = sortOptions.value;
         currentSearchParams = `?_sort=name&_order=${selectedOption}`;
         fetchUsers(currentSearchParams);
     }
-    
+
     // Initial fetch
     fetchUsers(`?_page=${currentPage}&_limit=${itemsPerPage}`);    
   });
